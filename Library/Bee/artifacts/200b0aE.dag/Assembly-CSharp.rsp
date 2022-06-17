@@ -323,9 +323,9 @@
 -r:"/Applications/Unity/Hub/Editor/2021.3.3f1/Unity.app/Contents/NetStandard/compat/2.1.0/shims/netstandard/System.Xml.XPath.XDocument.dll"
 -r:"/Applications/Unity/Hub/Editor/2021.3.3f1/Unity.app/Contents/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll"
 -r:"/Applications/Unity/Hub/Editor/2021.3.3f1/Unity.app/Contents/NetStandard/ref/2.1.0/netstandard.dll"
--r:"/Users/berk/Desktop/RealmRush/Library/PackageCache/com.unity.nuget.newtonsoft-json@3.0.2/Runtime/Newtonsoft.Json.dll"
--r:"/Users/berk/Desktop/RealmRush/Library/PackageCache/com.unity.testtools.codecoverage@1.0.1/lib/ReportGenerator/ReportGeneratorMerged.dll"
--r:"/Users/berk/Desktop/RealmRush/Library/PackageCache/com.unity.visualscripting@1.7.6/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll"
+-r:"/Users/berk/Desktop/RealmRush-V1/Library/PackageCache/com.unity.nuget.newtonsoft-json@3.0.2/Runtime/Newtonsoft.Json.dll"
+-r:"/Users/berk/Desktop/RealmRush-V1/Library/PackageCache/com.unity.testtools.codecoverage@1.0.1/lib/ReportGenerator/ReportGeneratorMerged.dll"
+-r:"/Users/berk/Desktop/RealmRush-V1/Library/PackageCache/com.unity.visualscripting@1.7.6/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll"
 -r:"Library/Bee/artifacts/200b0aE.dag/Unity.EditorCoroutines.Editor.ref.dll"
 -r:"Library/Bee/artifacts/200b0aE.dag/Unity.Performance.Profile-Analyzer.Editor.ref.dll"
 -r:"Library/Bee/artifacts/200b0aE.dag/Unity.PlasticSCM.Editor.ref.dll"
@@ -360,9 +360,10 @@
 "Assets/Scripts/ObjectPool.cs"
 "Assets/Scripts/PathFinding/GridManager.cs"
 "Assets/Scripts/PathFinding/Node.cs"
+"Assets/Scripts/PathFinding/Pathfinder.cs"
 "Assets/Scripts/TargetLocator.cs"
+"Assets/Scripts/Tile.cs"
 "Assets/Scripts/Tower.cs"
-"Assets/Scripts/Waypoint.cs"
 -langversion:9.0
 
 /deterministic

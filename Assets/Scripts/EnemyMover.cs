@@ -5,78 +5,74 @@ using UnityEngine;
 [RequireComponent(typeof(Enemy))]
 public class EnemyMover : MonoBehaviour
 {
-  [SerializeField] List<Waypoint> path = new List<Waypoint>();
-  [SerializeField] [Range(0f, 5f)] float speed = 1f;
-  Enemy enemy;
+    [SerializeField] [Range(0f, 5f)] float speed = 1f; 
+    
+    List<Node> path = new List<Node>();
+    
+    Enemy enemy;
+    GridManager gridManager;
+    Pathfinder pathfinder;
 
-  void OnEnable() {
-      findPath();
-      ReturnToStart();
-      StartCoroutine(followPath());
+    void OnEnable()
+    {
+        ReturnToStart();
+        RecalculatePath(true);
+    }
 
-  }
+    void Awake()
+    {
+        enemy = GetComponent<Enemy>();
+        gridManager = FindObjectOfType<GridManager>();
+        pathfinder = FindObjectOfType<Pathfinder>();
+    }
 
- void Start(){
-     enemy = GetComponent<Enemy>();
- }
-  void findPath(){
+    void RecalculatePath(bool resetPath)
+    {
+        Vector2Int coordinates = new Vector2Int();
 
-      path.Clear();
+        if(resetPath)
+        {
+            coordinates = pathfinder.StartCoordinates;
+        }
+        else
+        {
+            coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
+        }
 
-      //tek tek yollara tag vermek yerine parent objesine verip onu findgameobjectwithtag ile buldu
-      GameObject parent = GameObject.FindGameObjectWithTag("Path");
+        StopAllCoroutines();
+        path.Clear();
+        path = pathfinder.GetNewPath(coordinates);
+        StartCoroutine(FollowPath());
+    }
 
-      foreach (Transform child in parent.transform)
-      {   Waypoint waypoint = child.GetComponent<Waypoint>();
+    void ReturnToStart()
+    {
+        transform.position = gridManager.GetPositionFromCoordinates(pathfinder.StartCoordinates);
+    }
 
-         if(waypoint != null){
-           path.Add(waypoint);
-         }
-          
-      }
-  }
+    void FinishPath()
+    {
+        enemy.stealGold();
+        gameObject.SetActive(false);
+    }
 
- //enemy spawn olunca uzakta bir yerde dogmasın diye ilk pathdan itibaren
- //olusturuluyor.
-  void ReturnToStart(){
-      transform.position = path[0].transform.position;
-  }
+    IEnumerator FollowPath() 
+    {
+        for(int i = 1; i < path.Count; i++) 
+        {
+            Vector3 startPosition = transform.position;
+            Vector3 endPosition = gridManager.GetPositionFromCoordinates(path[i].coordinates);
+            float travelPercent = 0f;
 
+            transform.LookAt(endPosition);
 
-  void finishPath(){
-      enemy.stealGold();
-      gameObject.SetActive(false);
-  }
-
-  /* Invoke yerine Coroutines kullanıyoruz 
-  IEnumerator yazıp returndan önce yield ekliyoruz
-  sonuna bekleme yaptırmak icin new waitforseconds(time);
-  ve cagirirken startcoroutine diyoruz.
-  */ 
-  IEnumerator followPath(){
-
-      foreach(Waypoint waypoint in path){
-          //transform.position = waypoint.transform.position;
-          //yield return new WaitForSeconds(waitTime);
-          
-          Vector3 startPosition = transform.position;
-          Vector3 endPosition = waypoint.transform.position;
-          float travelPercent = 0f;
-
-          transform.LookAt(endPosition);
-
-          while(travelPercent < 1f){
-           travelPercent += Time.deltaTime * speed;
-           transform.position = Vector3.Lerp(startPosition,endPosition,travelPercent);
-           yield return new WaitForEndOfFrame();
-          }
-         
-      }
-      
-      finishPath();
-      
-  }
-   
-   
-  
+            while(travelPercent < 1f) {
+                travelPercent += Time.deltaTime * speed;
+                transform.position = Vector3.Lerp(startPosition, endPosition, travelPercent);
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        
+        FinishPath();
+    }
 }
